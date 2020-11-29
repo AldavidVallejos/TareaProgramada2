@@ -71,7 +71,7 @@ public class Calculadora
                 auxiliar=auxiliar.getMonomioSiguiente();
             } 
         }
-        
+        polinomioResultado.simplificar();
         return polinomioResultado;
     }
 
@@ -80,14 +80,43 @@ public class Calculadora
         Monomio auxiliar=polinomio1.getInicio();
 
         polinomioResultado=multiplicarMonomioPolinomio(auxiliar, polinomio2);
-        
+        while(auxiliar.getMonomioSiguiente()!=null)
+        {
+            Polinomio polinomioAuxiliar=new Polinomio();
+            polinomioAuxiliar=multiplicarMonomioPolinomio(auxiliar.getMonomioSiguiente(), polinomio2);
+            Monomio segundoAuxiliar=polinomioAuxiliar.getInicio();
+            polinomioResultado.agregarAlFinal(segundoAuxiliar.getCoeficiente(),segundoAuxiliar.getVariable(),segundoAuxiliar.getExponente());
+
+            while(segundoAuxiliar.getMonomioSiguiente()!=null)
+            {
+                polinomioResultado.agregarAlFinal(segundoAuxiliar.getMonomioSiguiente().getCoeficiente(),segundoAuxiliar.getMonomioSiguiente().getVariable(),segundoAuxiliar.getMonomioSiguiente().getExponente());
+                segundoAuxiliar=segundoAuxiliar.getMonomioSiguiente();
+            }
+            auxiliar=auxiliar.getMonomioSiguiente();
+        }
+
+        polinomioResultado.simplificar();
         return polinomioResultado;
     }    
 
     public Polinomio multiplicarMonomioPolinomio(Monomio miMonomio, Polinomio miPolinomio)
     {
         Polinomio polinomioDeRetorno=new Polinomio();
-       
+        Monomio auxiliar=miPolinomio.getInicio();
+
+        float nuevoCoeficiente=miMonomio.getCoeficiente()*auxiliar.getCoeficiente();
+        int nuevoExponente=miMonomio.getExponente()+auxiliar.getExponente();
+        polinomioDeRetorno.agregarAlFinal(nuevoCoeficiente,auxiliar.getVariable(),nuevoExponente);    
+
+        while(auxiliar.getMonomioSiguiente()!=null)
+        {
+            nuevoCoeficiente=miMonomio.getCoeficiente()*auxiliar.getMonomioSiguiente().getCoeficiente();
+            nuevoExponente=miMonomio.getExponente()+auxiliar.getMonomioSiguiente().getExponente();
+            polinomioDeRetorno.agregarAlFinal(nuevoCoeficiente,auxiliar.getVariable(),nuevoExponente);  
+            auxiliar=auxiliar.getMonomioSiguiente();
+        }   
+
+        polinomioDeRetorno.simplificar();
         return polinomioDeRetorno;
 
     }

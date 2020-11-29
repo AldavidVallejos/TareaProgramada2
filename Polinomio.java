@@ -78,6 +78,68 @@ public class Polinomio{
         tamanio++;
     }
 
+    public String toString()
+    {
+
+        String etiqueta="";
+        Monomio auxiliar = inicio;
+
+        if(esVacia())
+        {
+
+            return "Polinomio vacío";
+        }else
+        {
+            etiqueta+=String.valueOf(auxiliar.getCoeficiente())+auxiliar.getVariable()+"^"+String.valueOf(auxiliar.getExponente());
+            while(auxiliar.getMonomioSiguiente()!=null){
+
+                etiqueta+="+"+String.valueOf(auxiliar.getMonomioSiguiente().getCoeficiente())+auxiliar.getMonomioSiguiente().getVariable()+"^"+auxiliar.getMonomioSiguiente().getExponente();
+            auxiliar=auxiliar.getMonomioSiguiente();
+        }
+        }
+        return etiqueta;
+    }
+
+    
+    public Polinomio simplificar()
+    {
+    
+        Polinomio resultado=new Polinomio();
+        Monomio interno=inicio;
+    int exponenteMaximo=inicio.getExponente();
+    
+    while(interno.getMonomioSiguiente()!=null)
+    {
+        if(interno.getMonomioSiguiente().getExponente()>exponenteMaximo)
+        {
+            exponenteMaximo=interno.getMonomioSiguiente().getExponente();
+        }
+        interno=interno.getMonomioSiguiente();
+    }
+    
+    for(int contador=0;contador<exponenteMaximo+1;contador++)
+    {
+    interno=inicio;
+    float coeficienteInterno=0;
+         while(interno!=null)
+    {
+        if(interno.getExponente()==contador)
+        {
+            coeficienteInterno+=interno.getCoeficiente();
+        }
+        
+        interno=interno.getMonomioSiguiente();
+    }
+    
+    if(coeficienteInterno!=0)
+    {
+    resultado.agregarAlFinal(coeficienteInterno,inicio.getVariable(),contador);
+    }
+    }
+    
+    
+    return resultado;
+    }
     
     
 }

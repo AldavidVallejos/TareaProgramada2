@@ -74,5 +74,8 @@ public class Vista
     JOptionPane.showMessageDialog(null,mensaje);
 }
 
-
+public void getNombreArchivo()
+{
+entradaTextoDeUsuario=JOptionPane.showInputDialog(null, "Ingrese el nombre del archivo que desea leer con el formato: nombre.txt");
+}
 }
